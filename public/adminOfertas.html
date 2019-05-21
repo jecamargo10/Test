@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Renting</title>
+
+  <link href="css/bootstrap.css" rel="stylesheet">
+  <link href="css/datepicker3.css" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+  <!--Icons-->
+  <script src="js/lumino.glyphs.js"></script>
+
+  <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" media="all" href="css/picker/daterangepicker.css" />
+  <script type="text/javascript" src="js/picker/moment.js"></script>
+  <script type="text/javascript" src="js/picker/daterangepicker.js"></script>
+
+  <script type="text/javascript" src="http://www.amcharts.com/lib/3/amcharts.js"></script>
+  <script type="text/javascript" src="http://cdn.amcharts.com/lib/3/pie.js"></script>
+  <script type="text/javascript" src="http://www.amcharts.com/lib/3/serial.js"></script>
+  <script type="text/javascript" src="http://www.amcharts.com/lib/3/plugins/export/export.js"></script>
+  <script type="text/javascript" src="http://www.amcharts.com/lib/3/themes/none.js"></script>
+  <script src="http://cdn.amcharts.com/lib/3/lang/es.js"></script>
+  <style>
+    .noPadding {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+    <br>
+    <img src="img/Logo.png" href="main.jsp" style="display: table; margin: 0 auto; width:130px">
+    <ul class="nav menu">
+      <li role="presentation" class="divider"></li>
+      <li id="comparendosDiv">
+        <a href="admin.html">
+<svg class="glyph stroked bag"><use xlink:href="#stroked-bag"></use></svg>
+                 Productos</a>
+      </li>
+      <br>
+      <li id="recaudosDiv" class="active">
+        <a href="adminOfertas.html ">
+                  <svg class="glyph stroked tag"><use xlink:href="#stroked-tag"/></svg> Ofertas</a>
+      </li>
+      <li role="presentation" class="divider"></li>
+      <li id="heatMapAccDiv">
+        <a href="adminOrdenes.html">
+          <svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg>
+                    Ordenes
+                </a>
+      </li>
+      <li role="presentation" class="divider"></li>
+      <li id="heatMapAccDiv">
+        <a href="adminExporte.html">
+<svg class="glyph stroked upload"><use xlink:href="#stroked-upload"/></svg>                    Exporte
+                </a>
+      </li>
+      <li>
+        <a id="cerrar" href="index.html">
+                    <svg class="glyph stroked male-user">
+                        <use xlink:href="#stroked-male-user"></use>
+                    </svg> Cerrar Sesión</a>
+      </li>
+      <li role="presentation" class="divider"></li>
+    </ul>
+    <img src="img/logo_simit.png" style="display: table; margin: 0 auto; width:130px">
+  </div>
+  <!--/.sidebar-->
+  <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+
+    <!--/.row-->
+    <div class="row">
+      <div class="col-xs-12 col-md-4 col-lg-4">
+        <div class="panel panel-green panel-widget ">
+          <div class="row no-padding">
+            <div class="col-sm-12 col-lg-12 widget-right">
+              <div class="text-muted" style="font-size: 14px">Productos en el MarketPlace</div>
+              <div class="large" id="totalValorComparendosKPI11_1" style="font-size: 16px">8</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-md-4 col-lg-4">
+        <div class="panel panel-green panel-widget ">
+          <div class="row no-padding">
+            <div class="col-sm-12 col-lg-12 widget-right">
+              <div class="text-muted" style="font-size: 14px">Productos en Aprobación</div>
+              <div class="large" id="promedioValorComparendosKPI11_2" style="font-size: 16px">2</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-md-4 col-lg-4">
+        <div class="panel panel-green panel-widget ">
+          <div class="row no-padding">
+            <div class="col-sm-12 col-lg-12 widget-right">
+              <div class="text-muted" style="font-size: 14px">Productos en Oferta</div>
+              <div class="large" id="proyeccionComparendosKPI10" style="font-size: 16px">4</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.row-->
+    <!--/.COMPARENDOS POR DEPARTAMENTO-->
+    <div style="display: none;" id="divComparendosDpto" class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading" id="tituloRecaudoTotal" style="line-height: 45px">
+            <div class="col-lg-6">
+              Total comparendos por departamento
+            </div>
+            <div class="col-lg-6">
+              <a class="btn btn-default" onclick="exportComparendosDpto();">Excel</a>
+              <a class="btn btn-default" onclick="printComparendosDpto();">Imprimir</a>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="col-lg-12">
+              <div id="chartComparendosDpto" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.COMPARENDOS POR MUNICIPIO-->
+    <div style="display: none;" id="divComparendosMunicipio" class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading" id="tituloRecaudoTotal">
+            <div class="col-lg-6">
+              Total comparendos por municipio
+            </div>
+            <div class="col-lg-6">
+              <a class="btn btn-default" onclick="exportComparendosMunicipio();">Excel</a>
+              <a class="btn btn-default" onclick="printComparendosMunicipio();">Imprimir</a>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="col-lg-12">
+              <div id="chartComparendosMunicipio" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.COMPARENDOS DE UN MUNICIPIO POR A�O Y MES-->
+    <div style="display: none;" id="divComparendosAno" class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading" id="tituloRecaudoTotal">
+            <div class="col-lg-6">
+              <select id="anoMes" onchange="cambiarAnoMes()" class="form-control">
+                                <option id="ano" value="ano">Total comparendos impuestos por a�o</option>
+                                <option id="mes" value="mes">Total comparendos impuestos por mes</option>
+                            </select>
+            </div>
+            <div class="col-lg-6" id="botonesAno">
+              <a class="btn btn-default" onclick="exportComparendosAno();">Excel</a>
+              <a class="btn btn-default" onclick="printComparendosAno();">Imprimir</a>
+            </div>
+            <div class="col-lg-6" style="display:none" id="botonesMes">
+              <a class="btn btn-default" onclick="exportComparendosMes();">Excel</a>
+              <a class="btn btn-default" onclick="printComparendosMes();">Imprimir</a>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="col-lg-12" id="graphAno">
+              <div id="totalComparendosImpuestosKPI7" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+            </div>
+            <div class="col-lg-12" style="display: none" id="graphMes">
+              <div id="totalComparendosImpuestosKPI7Mes" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.row-->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading" id="tituloComparendoPorTipo">
+            <div class="form-group col-lg-6">
+              <h3>Ofertas</h3>
+            </div>
+
+          </div>
+          <div class="panel-body">
+            <!--Table-->
+            <table class="table table-striped">
+
+              <!--Table head-->
+              <thead>
+                <tr>
+                  <th>Nombre mostrado</th>
+                  <th>Pructo</th>
+                  <th>Precio</th>
+                  <th>Oferta</th>
+                  <th>Rango de fechas</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <!--Table head-->
+
+              <!--Table body-->
+              <tbody>
+                <tr>
+                  <td>10% en Llantas Yokohama</td>
+                  <td>Llantas Yokohama 245/65 R17 ATS G012</td>
+                  <td>$523.000</td>
+                  <td>10%</td>
+                  <td>01/01/2018 - 01/01/2019</td>
+                  <td>Aprobado</td>
+                </tr>
+                <tr>
+                  <td>15% en Llantas RoadStone</td>
+                  <td>Llantas RoadStone 205/60 R16 N5000 PLUS</td>
+                  <td>$241.300</td>
+                  <td>15%</td>
+                  <td>06/06/2018 - 07/07/2019</td>
+                  <td>Aprobado</td>
+                </tr>
+                <tr>
+                  <td>Ahorra $50.000 comprando las nuevas Llantas Yokohama</td>
+                  <td>Llantas Yokohama 175/50 R13 A539</td>
+                  <td>$221.500</td>
+                  <td>$50.000</td>
+                  <td>16/05/2018 - 01/07/2019</td>
+                  <td>Aprobado</td>
+                </tr>
+                <tr>
+                  <td>Te damos el 15 % en Llantas Firestone</td>
+                  <td>Llantas Firestone 235/60 R17 DESTINATION LE</td>
+                  <td>$1'281.500</td>
+                  <td>15%</td>
+                  <td>08/06/2018 - 01/08/2019</td>
+                  <td>
+                    <div id="btnwrap">
+                      <button class="btn-default" id="idAddButton" onclick="idAddButton_onclick();">Aprobar</button>
+                      <button class="btn-default" id="idEditButton" onclick="idEditButton_onclick();">Rechazar</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <!--Table body-->
+
+            </table>
+            <!--Table-->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.row-->
+    <!--/.row-->
+
+  </div>
+  <!--/.main-->
+  <!--    <script src="js/jquery-1.11.1.min.js"></script>-->
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/chart.min.js"></script>
+  <script src="js/chart-data.js"></script>
+  <script src="js/easypiechart.js"></script>
+  <script src="js/easypiechart-data.js"></script>
+  <script src="js/bootstrap-datepicker.js"></script>
+  <script src="js/javis/stuff2.js"></script>
+
+</body>
+
+</html>

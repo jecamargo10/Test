@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Giros y Finanzas</title>
+
+  <link href="css/bootstrap.css" rel="stylesheet">
+  <link href="css/datepicker3.css" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+  <!--Icons-->
+  <script src="js/lumino.glyphs.js"></script>
+
+  <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" media="all" href="css/picker/daterangepicker.css" />
+  <script type="text/javascript" src="js/picker/moment.js"></script>
+  <script type="text/javascript" src="js/picker/daterangepicker.js"></script>
+
+  <script type="text/javascript" src="http://www.amcharts.com/lib/3/amcharts.js"></script>
+  <script type="text/javascript" src="http://cdn.amcharts.com/lib/3/pie.js"></script>
+  <script type="text/javascript" src="http://www.amcharts.com/lib/3/serial.js"></script>
+  <script type="text/javascript" src="http://www.amcharts.com/lib/3/plugins/export/export.js"></script>
+  <script type="text/javascript" src="http://www.amcharts.com/lib/3/themes/none.js"></script>
+  <script src="http://cdn.amcharts.com/lib/3/lang/es.js"></script>
+  <style>
+    .noPadding {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+    <br>
+    <img src="https://www.girosyfinanzas.com/wps/contenthandler/dav/fs-type1/themes/TemaGyF/img/app/gyf_logo.png" href="main.jsp" style="display: table; margin: 0 auto; width:130px">
+    <ul class="nav menu">
+      <li role="presentation" class="divider"></li>
+      <li id="comparendosDiv" class="active">
+        <a href="main.jsp">
+<svg class="glyph stroked bag"><use xlink:href="#stroked-bag"></use></svg>
+                 Cuenta Ahorra Fácil</a>
+      </li>
+
+      <li id="heatMapAccDiv">
+        <a href="tarjetadebito.html">
+          <svg class="glyph stroked bag"><use xlink:href="#stroked-bag"/></svg>
+                    Tarjeta Débito
+                </a>
+      </li>
+      <li id="heatMapAccDiv">
+        <a href="tarjetadebito.html">
+          <svg class="glyph stroked bag"><use xlink:href="#stroked-bag"/></svg>
+                    CDT
+                </a>
+      </li>
+      <li role="presentation" class="divider"></li>
+
+      <li id="recaudosDiv">
+        <a href="ofertas2.html ">
+                  <svg class="glyph stroked tag"><use xlink:href="#stroked-tag"/></svg> CrediOro</a>
+      </li>
+      <li id="recaudosDiv">
+        <a href="ofertas2.html ">
+                  <svg class="glyph stroked tag"><use xlink:href="#stroked-tag"/></svg> Crédito Rotativo</a>
+      </li>
+      <li id="recaudosDiv">
+        <a href="ofertas2.html ">
+                  <svg class="glyph stroked tag"><use xlink:href="#stroked-tag"/></svg> Crédito de Libranza</a>
+      </li>
+      <li role="presentation" class="divider"></li>
+
+      <li id="heatMapAccDiv">
+        <a href="tarjetadebito.html">
+          <svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg>
+                    Estado de Solicitudes
+                </a>
+      </li>
+      <li role="presentation" class="divider"></li>
+      <li>
+        <a id="cerrar" href="">
+                    <svg class="glyph stroked male-user">
+                        <use xlink:href="#stroked-male-user"></use>
+                    </svg> Cerrar Sesión</a>
+      </li>
+      <li role="presentation" class="divider"></li>
+    </ul>
+  </div>
+  <!--/.sidebar-->
+  <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+
+    <!--/.row-->
+  <!--/.row-->
+    <!--/.COMPARENDOS POR DEPARTAMENTO-->
+    <div style="display: none;" id="divComparendosDpto" class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading" id="tituloRecaudoTotal" style="line-height: 45px">
+            <div class="col-lg-6">
+              Total comparendos por departamento
+            </div>
+            <div class="col-lg-6">
+              <a class="btn btn-default" onclick="exportComparendosDpto();">Excel</a>
+              <a class="btn btn-default" onclick="printComparendosDpto();">Imprimir</a>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="col-lg-12">
+              <div id="chartComparendosDpto" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.COMPARENDOS POR MUNICIPIO-->
+    <div style="display: none;" id="divComparendosMunicipio" class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading" id="tituloRecaudoTotal">
+            <div class="col-lg-6">
+              Total comparendos por municipio
+            </div>
+            <div class="col-lg-6">
+              <a class="btn btn-default" onclick="exportComparendosMunicipio();">Excel</a>
+              <a class="btn btn-default" onclick="printComparendosMunicipio();">Imprimir</a>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="col-lg-12">
+              <div id="chartComparendosMunicipio" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.COMPARENDOS DE UN MUNICIPIO POR A�O Y MES-->
+    <div style="display: none;" id="divComparendosAno" class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading" id="tituloRecaudoTotal">
+            <div class="col-lg-6">
+              <select id="anoMes" onchange="cambiarAnoMes()" class="form-control">
+                                <option id="ano" value="ano">Total comparendos impuestos por a�o</option>
+                                <option id="mes" value="mes">Total comparendos impuestos por mes</option>
+                            </select>
+            </div>
+            <div class="col-lg-6" id="botonesAno">
+              <a class="btn btn-default" onclick="exportComparendosAno();">Excel</a>
+              <a class="btn btn-default" onclick="printComparendosAno();">Imprimir</a>
+            </div>
+            <div class="col-lg-6" style="display:none" id="botonesMes">
+              <a class="btn btn-default" onclick="exportComparendosMes();">Excel</a>
+              <a class="btn btn-default" onclick="printComparendosMes();">Imprimir</a>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="col-lg-12" id="graphAno">
+              <div id="totalComparendosImpuestosKPI7" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+            </div>
+            <div class="col-lg-12" style="display: none" id="graphMes">
+              <div id="totalComparendosImpuestosKPI7Mes" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.row-->
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading" id="tituloTotalValorComparendosImpuestos">
+            <div class="form-group col-lg-6">
+              <h3>Formato de Solicitud</h3>
+            </div>
+            <div class="col-lg-6">
+            </div>
+          </div>
+
+          <div class="panel-body">
+            <form>
+              <div class="form-group">
+                <label for="exampleFormControlInput1">No de Identificación</label>
+                <input id="id" class="form-control" type="number" value="1010226036">
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlInput1">Lugar de Expedición</label>
+                <input  id="city" class="form-control" type="text" value="Bogota">
+              </div>
+
+              <div class="form-group">
+                <label for="exampleFormControlInput1">Celular</label>
+                <input id="cellphone" class="form-control" type="number" value="3107610201">
+              </div>
+
+              <label for="exampleFormControlInput1">Ocupación</label>
+              <select id="myselect" class="form-control" type="text">
+      <option>Empleado</option>
+      <option>Desempleado</option>
+      <option>Hogar</option>
+      <option>Independiente</option>
+      <option>Rentista de Capital</option>
+    </select>
+    <div class="form-group">
+      <label for="exampleFormControlInput1">Profesion</label>
+      <input  id="profesion" class="form-control" type="text">
+    </div>
+
+              <div class="form-group">
+                <label for="exampleFormControlInput1">Ingresos Mensuales</label>
+
+                <div class="input-group">
+                  <span class="input-group-addon">$</span>
+                  <input class="form-control" type="number" id="number2" pattern="[0-9]*" placeholder="Ingresos">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="exampleFormControlInput1">Egresos Mensuales</label>
+
+                <div class="input-group">
+                  <span class="input-group-addon">$</span>
+                  <input class="form-control" type="number" id="number3" pattern="[0-9]*" placeholder="Egresos">
+                </div>
+              </div>
+
+
+              <a class="btn btn-default" id="send" onclick="send();">Enviar</a>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--/.row-->
+
+
+    <!--/.row-->
+  </div>
+  <!--/.main-->
+  <!--    <script src="js/jquery-1.11.1.min.js"></script>-->
+  <script>
+  function send() {
+    console.log("ESPICHADO" )
+    //window.location.href = '../RentingMP/admin.html';
+
+    var id = $('#id').val();
+    var city = $('#city').val();
+    var cellphone = $('#cellphone').val();
+    var profesion = $('#profesion').val();
+var opcion = $( "#myselect option:selected" ).text() || "Empleado";
+var amount = $('#number2').val();
+var egresos = $('#number3').val();
+
+
+//    var name = $('#').val();
+
+
+
+    $.post("/finishForm",
+    {
+      numeroID: id,
+      city: city,
+      country: "COL",
+      name: "javier",
+      numCelular: cellphone,
+      profesion:profesion,
+      ocupacion: opcion,
+      amount: amount,
+      egresos:egresos
+
+
+
+    },
+    function(data, status){
+      alert("Tu solicitud de apertura ha sido enviado exitosamente");
+    });
+  }
+  $(document).ready(function(){
+
+
+    if (localStorage.getItem("gyf"))
+    {
+      var arr = localStorage.getItem("gyf").split(",");
+    console.log("HABEMMUSSSS")
+    console.log(arr[0])
+    $('#id').val(arr[0]);
+    $('#city').val(arr[1]);
+    $('#cellphone').val(arr[2]);
+    $('#profesion').val(arr[3]);
+    //$('#profesion').text(arr[3]);
+    $('#number2').val(arr[5]);
+    $('#number3').val(parseInt(arr[6]));
+    }
+  });
+
+
+
+
+
+</script>
+
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/chart.min.js"></script>
+  <script src="js/chart-data.js"></script>
+  <script src="js/easypiechart.js"></script>
+  <script src="js/easypiechart-data.js"></script>
+  <script src="js/bootstrap-datepicker.js"></script>
+  <script src="js/javis/stuff2.js"></script>
+
+</body>
+
+</html>
