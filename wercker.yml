@@ -1,0 +1,39 @@
+# The container definition we want to use for developing our app
+box:
+  id: node:latest
+  ports:
+    - "8080"
+# Defining the dev pipeline
+dev:
+  steps:
+    - npm-install
+    - internal/watch:
+        code: node app.js
+        reload: true
+build:
+  # The steps that will be executed on build
+  steps:
+    - script:
+        code: export NODE_ENV='testing'
+    # A step that executes `npm install` command
+    - npm-install
+    # A step that executes `npm test` command
+    # A custom script step, name value is used in the UI
+    # and the code value contains the command that get executed
+    - script:
+        name: echo nodejs information
+        code: |
+          echo "node version $(node -v) running"
+          echo "npm version $(npm -v) running"
+deploy:
+  steps:
+    - internal/docker-build:
+        dockerfile: Dockerfile
+        image-name: my-new-image
+    - internal/docker-push:
+        image-name: my-new-image
+        username: $USERNAME
+        password: $PASSWORD
+        tag: latest
+        repository: $DOCKER_REPOSITORY
+        registry: https://registry.hub.docker.com

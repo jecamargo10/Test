@@ -42,6 +42,8 @@ var oracledb = require('oracledb');
 var dbConfig = require('./dbconfig.js');
 const path = require("path");
 var request = require("request");
+const cors = require("cors");
+
 
 // routes will go here
 
@@ -57,6 +59,8 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'));
 });
+
+app.use(cors());
 
 
 
