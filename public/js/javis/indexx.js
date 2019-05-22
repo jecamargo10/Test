@@ -2,6 +2,8 @@ document.getElementById("inicioMaximo").addEventListener("click", function(){
   var doritos = document.getElementById("email").value;
   var tostacos = document.getElementById("pass").value;
   var data = { username: doritos, pass: tostacos}
+  localStorage.setItem("user", doritos);
+  localStorage.setItem("pass", tostacos);
 
   $.get("/user",data,
   function(data, status){

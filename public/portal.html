@@ -187,16 +187,16 @@
             <form>
               <div class="form-group">
                 <label for="exampleFormControlInput1">No de Identificación</label>
-                <input id="id" class="form-control" type="number" value="1010226036">
+                <input id="id" class="form-control" type="number" >
               </div>
               <div class="form-group">
                 <label for="exampleFormControlInput1">Lugar de Expedición</label>
-                <input  id="city" class="form-control" type="text" value="Bogota">
+                <input  id="city" class="form-control" type="text" >
               </div>
 
               <div class="form-group">
                 <label for="exampleFormControlInput1">Celular</label>
-                <input id="cellphone" class="form-control" type="number" value="3107610201">
+                <input id="cellphone" class="form-control" type="number" >
               </div>
 
               <label for="exampleFormControlInput1">Ocupación</label>
@@ -247,6 +247,59 @@
   <!--/.main-->
   <!--    <script src="js/jquery-1.11.1.min.js"></script>-->
   <script>
+  var ids ;
+  var citys ;
+  var cellphones ;
+  var profesions ;
+var amounts ;
+var egresoss  ;
+
+var opcion = $( "#myselect option:selected" ).text() || "Empleado";
+  window.addEventListener('beforeunload', function (e) {
+    ids = $('#id').val() || null;
+    city = $('#city').val()|| null;
+    cellphone = $('#cellphone').val()|| null;
+    profesion = $('#profesion').val()|| null;
+amount = $('#number2').val()|| null;
+  egresos = $('#number3').val()|| null;
+  // Cancel the event
+  console.log("SETEADO" )
+
+});
+
+  $(window).on('unload', function() {
+  	// You can send an ArrayBufferView, Blob, DOMString or FormData
+  	// Since Content-Type of FormData is multipart/form-data, the Content-Type of the HTTP request will also be multipart/form-data
+      var id = $('#id').val() || null;
+      var city = $('#city').val()|| null;
+      var cellphone = $('#cellphone').val()|| null;
+      var profesion = $('#profesion').val()|| null;
+    var amount = $('#number2').val()|| null;
+    var egresos = $('#number3').val()|| null;
+    var user = localStorage.getItem("user");
+    var pass = localStorage.getItem("pass");
+    var opcion = $( "#myselect option:selected" ).text() || "Empleado";
+
+
+      data = {
+        noidentificacion: id,
+        lugarexpedicion: city,
+        celular: cellphone,
+        profesion:profesion,
+        ocupacion: opcion,
+        ingresosmensuales: amount,
+        egresosmensuales:egresos
+      }
+      console.log("SENDING" )
+      console.log(data )
+
+//      navigator.sendBeacon('/temporalWeb?username='+user+'&pass='+pass+'&noidentificacion='+id+'&lugarexpedicion='+city+'&celular='+celular, data);
+navigator.sendBeacon('/temporalWeb?username='+user+'&pass='+pass+'&noidentificacion='+id+'&lugarexpedicion='+city+'&celular='+cellphone+'&profesion='+profesion+'&ingresosmensuales='+amount+'&egresosmensuales='+egresos+'&ocupacion='+opcion, data);
+
+  	//navigator.sendBeacon('/temporalWeb?username='+user+'&pass='+pass+'&noidentificacion='+id+'&lugarexpedicion='+city+'&celular='+cellphone+'&profesion='+profesion+'&ocupacion='+ocupacion, data);
+  });
+
+
   function send() {
     console.log("ESPICHADO" )
     //window.location.href = '../RentingMP/admin.html';
@@ -275,9 +328,6 @@ var egresos = $('#number3').val();
       ocupacion: opcion,
       amount: amount,
       egresos:egresos
-
-
-
     },
     function(data, status){
       alert("Tu solicitud de apertura ha sido enviado exitosamente");

@@ -248,6 +248,9 @@ app.post('/updateTemporal', function (req, res) {
 
 
 app.post('/temporal', function (req, res) {
+  console.log("ENTROO")
+
+  console.log(req.body)
   //res.send('GET request to the homepage');
   var id = req.query.username || "null";
   var pass = req.query.pass || "null";
@@ -258,6 +261,81 @@ app.post('/temporal', function (req, res) {
   var profesion = req.body.profesion || "null";
   var ingresosmensuales = req.body.ingresosmensuales || "null";
   var egresosmensuales = req.body.ingresosmensuales || "null";
+
+    async function run() {
+      let connection;
+
+      try {
+
+        let sql, binds, options, result;
+
+        connection = await oracledb.getConnection(  {
+          user          : dbConfig.user,
+          password      : dbConfig.password,
+          connectString : dbConfig.connectString,
+          privilege     : oracledb.SYSDBA
+
+        });
+
+        binds = {};
+        // For a complete list of options see the documentation.
+        options = {
+          autoCommit: true
+          // batchErrors: true,  // continue processing even if there are data errors
+        };
+          sql = "INSERT INTO GIROSYFINANZASCUENTAAHORROS"+
+        "  (NOIDENTIFICACION, LUGAREXPEDICION, CELULAR, INGRESOSMENSUALES, EGRESOSMENSUALES, OCUPACION, PROFESION, USERNAME, PASS)"+
+        "   VALUES ('"+nomeroid+"','"+lugarexpedicion+"','"+celular+"','"+ingresosmensuales+"','"+egresosmensuales+"','"+ocupacion+"','"+profesion+"','"+id+"','"+pass+"')";
+
+      //  sql = `INSERT INTO mytab VALUES (:1, :2)`;
+//INSERT INTO "SYS"."GIROSYFINANZASCUENTAAHORROS" (NOIDENTIFICACION, LUGAREXPEDICION, FINALIZADO, USERNAME, PASS) VALUES ('123', 'BOGOta', 'N', 'javier', 'javier')
+
+    //    sql = "SELECT * FROM GIROSYFINANZASCUENTAAHORROS WHERE USERNAME = " + "'" + id +"'" +" AND PASS  = " +"'" + pass +"'";
+        console.log(sql);
+
+        result = await connection.execute(sql,binds,options);
+    //    console.log("Current date query results: ");
+
+    //    console.log(result.rows[0]);
+      //  console.log("Stuff");
+      //  console.log(result);
+      console.log(result);
+        res.send( result)
+
+      } catch (err) {
+        console.error(err);
+      } finally {
+        if (connection) {
+          try {
+            await connection.close();
+          } catch (err) {
+            console.error(err);
+          }
+        }
+      }
+    }
+
+    run();
+
+
+});
+
+
+
+app.post('/temporalWeb', function (req, res) {
+  console.log("ENTROO")
+
+  console.log(req.body)
+  //res.send('GET request to the homepage');
+  var id = req.query.username || "null";
+  var pass = req.query.pass || "null";
+  var nomeroid = req.query.noidentificacion || "null";
+  var lugarexpedicion = req.query.lugarexpedicion || "null";
+  var celular = req.query.celular || "null";
+  var ocupacion = req.query.ocupacion || "null";
+  var profesion = req.query.profesion || "null";
+  var ingresosmensuales = req.query.ingresosmensuales || "null";
+  var egresosmensuales = req.query.ingresosmensuales || "null";
 
     async function run() {
       let connection;
