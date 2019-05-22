@@ -219,7 +219,7 @@ app.post('/updateTemporal', function (req, res) {
     //    sql = "SELECT * FROM GIROSYFINANZASCUENTAAHORROS WHERE USERNAME = " + "'" + id +"'" +" AND PASS  = " +"'" + pass +"'";
         console.log(sql);
 
-        result = await connection.execute(sql);
+        result = await connection.execute(sql,options);
         console.log("Current date query results: ");
 
     //    console.log(result.rows[0]);
@@ -277,12 +277,8 @@ app.post('/temporal', function (req, res) {
         binds = {};
         // For a complete list of options see the documentation.
         options = {
-          autoCommit: true,
+          autoCommit: true
           // batchErrors: true,  // continue processing even if there are data errors
-          bindDefs: [
-            { type: oracledb.NUMBER },
-            { type: oracledb.STRING, maxSize: 20 }
-          ]
         };
           sql = "INSERT INTO GIROSYFINANZASCUENTAAHORROS"+
         "  (NOIDENTIFICACION, LUGAREXPEDICION, CELULAR, INGRESOSMENSUALES, EGRESOSMENSUALES, OCUPACION, PROFESION, USERNAME, PASS)"+
@@ -294,13 +290,14 @@ app.post('/temporal', function (req, res) {
     //    sql = "SELECT * FROM GIROSYFINANZASCUENTAAHORROS WHERE USERNAME = " + "'" + id +"'" +" AND PASS  = " +"'" + pass +"'";
         console.log(sql);
 
-        result = await connection.execute(sql);
-        console.log("Current date query results: ");
+        result = await connection.execute(sql,binds,options);
+    //    console.log("Current date query results: ");
 
     //    console.log(result.rows[0]);
       //  console.log("Stuff");
       //  console.log(result);
-        res.send(result)
+      console.log(result);
+        res.send( result)
 
       } catch (err) {
         console.error(err);
